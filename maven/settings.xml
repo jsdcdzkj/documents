@@ -1,0 +1,127 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.xsd">
+
+    <!-- 本地仓库配置 -->
+    <localRepository>/Volumes/ssd/.m2/repository</localRepository>
+
+    <!-- 代理服务器配置 -->
+    <proxies>
+        <proxy>
+            <id>local-proxy</id>
+            <active>true</active>
+            <protocol>https</protocol>
+            <host>127.0.0.1</host>
+            <port>7890</port>
+            <!-- 如果代理需要认证 -->
+            <!-- <username>proxyuser</username> -->
+            <!-- <password>somepassword</password> -->
+            <nonProxyHosts>localhost|127.0.0.1|*.local</nonProxyHosts>
+        </proxy>
+        <proxy>
+            <id>local-proxy-http</id>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host>127.0.0.1</host>
+            <port>7890</port>
+            <!-- 如果代理需要认证 -->
+            <!-- <username>proxyuser</username> -->
+            <!-- <password>somepassword</password> -->
+            <nonProxyHosts>localhost|127.0.0.1|*.local</nonProxyHosts>
+        </proxy>
+    </proxies>
+
+    <!-- 镜像配置 -->
+    <mirrors>
+        <!-- 阿里云HTTPS镜像（优先） -->
+        <mirror>
+            <id>aliyunmaven</id>
+            <name>阿里云公共仓库</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <mirrorOf>central,jcenter,google</mirrorOf>
+        </mirror>
+
+        <!-- 阿里云快照镜像 -->
+        <mirror>
+            <id>aliyunmaven-snapshots</id>
+            <name>阿里云快照仓库</name>
+            <url>https://maven.aliyun.com/repository/apache-snapshots</url>
+            <mirrorOf>apache-snapshots</mirrorOf>
+        </mirror>
+
+        <!-- 腾讯云镜像（备用） -->
+        <mirror>
+            <id>tencentmaven</id>
+            <name>腾讯云公共仓库</name>
+            <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+            <mirrorOf>!local,*</mirrorOf>
+        </mirror>
+
+        <!-- 华为云镜像（备用） -->
+        <mirror>
+            <id>huweimaven</id>
+            <name>华为云公共仓库</name>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+            <mirrorOf>!local,*</mirrorOf>
+        </mirror>
+
+        <!-- 中央仓库镜像（备用） -->
+        <mirror>
+            <id>central-proxy</id>
+            <name>中央仓库代理</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <!-- 配置文件 -->
+    <profiles>
+        <!-- JDK版本配置 -->
+        <profile>
+            <id>jdk-1.8</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+
+        <!-- SSL证书配置 -->
+        <profile>
+            <id>jdk-ssl</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <javax.net.ssl.trustStore>/Users/wangyan/Library/Java/JavaVirtualMachines/corretto-1.8.0_432/Contents/Home/jre/lib/security/cacerts</javax.net.ssl.trustStore>
+                <javax.net.ssl.trustStorePassword>changeit</javax.net.ssl.trustStorePassword>
+            </properties>
+        </profile>
+
+        <!-- 网络连接配置 -->
+        <profile>
+            <id>network-settings</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <maven.wagon.http.connectionTimeout>30000</maven.wagon.http.connectionTimeout>
+                <maven.wagon.http.readTimeout>60000</maven.wagon.http.readTimeout>
+                <maven.wagon.http.retryHandler.count>3</maven.wagon.http.retryHandler.count>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- 激活的配置文件 -->
+    <activeProfiles>
+        <activeProfile>jdk-1.8</activeProfile>
+        <activeProfile>jdk-ssl</activeProfile>
+        <activeProfile>network-settings</activeProfile>
+    </activeProfiles>
+
+</settings>
